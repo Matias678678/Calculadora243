@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>ScreenLife Impact - Kids</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h1 {
+            color: #0077cc;
+            font-size: 2em;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-size: 1.2em;
+        }
+        input, select, button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1em;
+            border: 2px solid #0077cc;
+            border-radius: 10px;
+            outline: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #resultado {
+            margin-top: 20px;
+            padding: 20px;
+            background: #d0f0c0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            display: none;
+        }
+        #calculando {
+            font-size: 1.5em;
+            color: #ff6600;
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🌟 ScreenLife Impact 🌟</h1>
+    
+    <label for="horasDia">¿Cuántas horas por día usas pantallas?</label>
+    <input type="number" id="horasDia" min="0" max="24" placeholder="Máximo 24h">
+
+    <label for="diasSemana">¿Cuántos días a la semana?</label>
+    <input type="number" id="diasSemana" min="0" max="7" placeholder="Máximo 7 días">
+
+    <label for="antesDormir">¿Usás pantallas antes de dormir?</label>
+    <select id="antesDormir">
+        <option value="si">Sí</option>
+        <option value="no">No</option>
+    </select>
+
+    <button onclick="calcularImpacto()">¡Calcular Impacto!</button>
+
+    <div id="calculando">🔍 Calculando... ✨</div>
+
+    <div id="resultado"></div>
+</div>
+
+<script>
+function calcularImpacto() {
+    var horasDia = parseFloat(document.getElementById("horasDia").value);
+    var diasSemana = parseInt(document.getElementById("diasSemana").value);
+    var antesDormir = document.getElementById("antesDormir").value;
+
+    // Corrige si ingresan valores muy altos
+    if (horasDia > 24) {
+        horasDia = 24;
+        document.getElementById("horasDia").value = 24;
+    }
+    if (diasSemana > 7) {
+        diasSemana = 7;
+        document.getElementById("diasSemana").value = 7;
+    }
+
+    if (isNaN(horasDia) || isNaN(diasSemana)) {
+        alert("Por favor, completá todos los campos.");
+        return;
+    }
+
+    // Mostrar "Calculando..."
+    document.getElementById("resultado").style.display = "none";
+    document.getElementById("calculando").style.display = "block";
+
+    setTimeout(function() {
+        var totalHorasSemana = horasDia * diasSemana;
+        var totalHorasMes = totalHorasSemana * 4;
+        var totalHorasAnio = totalHorasSemana * 52;
+
+        var sueñoPerdidoSemana = 0;
+        var sueñoPerdidoMes = 0;
+        var sueñoPerdidoAnio = 0;
+
+        if (antesDormir === "si") {
+            sueñoPerdidoSemana = horasDia * diasSemana * (7 / 60); // 7 minutos por hora de pantalla
+            sueñoPerdidoMes = sueñoPerdidoSemana * 4;
+            sueñoPerdidoAnio = sueñoPerdidoSemana * 52;
+        }
+
+        var riesgoFatiga = "Bajo 🟢";
+        if (horasDia >= 2 && horasDia < 4) {
+            riesgoFatiga = "Moderado 🟡";
+        } else if (horasDia >= 4) {
+            riesgoFatiga = "Alto 🔴";
+        }
+
+        var riesgoMental = "Bajo 🟢";
+        if (horasDia >= 3) {
+            riesgoMental = "Moderado/Alto 🟠🔴";
+        }
+
+        document.getElementById("calculando").style.display = "none";
+        document.getElementById("resultado").style.display = "block";
+        document.getElementById("resultado").innerHTML = `
+            <h2>📊 Resultados:</h2>
+            <p><strong>Horas de pantalla:</strong></p>
+            <ul style="list-style: none; padding-left: 0;">
+                <li>🗓️ Por semana: <strong>${totalHorasSemana.toFixed(1)}</strong> horas</li>
+                <li>📅 Por mes: <strong>${totalHorasMes.toFixed(1)}</strong> horas</li>
+                <li>📆 Por año: <strong>${totalHorasAnio.toFixed(1)}</strong> horas</li>
+            </ul>
+            <p><strong>Horas de sueño perdidas:</strong></p>
+            <ul style="list-style: none; padding-left: 0;">
+                <li>😴 Por semana: <strong>${sueñoPerdidoSemana.toFixed(1)}</strong> horas</li>
+                <li>😴 Por mes: <strong>${sueñoPerdidoMes.toFixed(1)}</strong> horas</li>
+                <li>😴 Por año: <strong>${sueñoPerdidoAnio.toFixed(1)}</strong> horas</li>
+            </ul>
+            <p><strong>Riesgo de fatiga ocular:</strong> ${riesgoFatiga}</p>
+            <p><strong>Impacto en salud mental:</strong> ${riesgoMental}</p>
+            <p style="margin-top:20px; font-size: 1.2em;">💡 <em>¡Recordá descansar tus ojos y disfrutar también de la vida sin pantallas!</em> 🎈</p>
+        `;
+    }, 2000); // Espera de 2 segundos
+}
+</script>
+
+</body>
+</html>
