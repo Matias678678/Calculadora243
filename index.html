@@ -159,9 +159,14 @@ function calcularImpacto() {
             <p><strong>Impacto en salud mental:</strong> ${riesgoMental}</p>
             <p style="margin-top:20px; font-size: 1.2em;">💡 <em>¡Recordá descansar tus ojos y disfrutar también de la vida sin pantallas!</em> 🎈</p>
         `;
+
+        // Scroll automático hacia los resultados
+        document.getElementById("resultado").scrollIntoView({ behavior: 'smooth' });
+
     }, 2000); // Espera de 2 segundos
 }
 </script>
 
 </body>
 </html>
+
